@@ -1,0 +1,12 @@
+#IntelliJ IDEA
+.idea/
+*.iml
+out/
+*.iws
+
+# Archivos compilados
+*.class
+*.jar
+*.war
+/our/production
+*.log
