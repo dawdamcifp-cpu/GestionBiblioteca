@@ -196,4 +196,12 @@ public class Library {
             System.out.println("No se encontraron libros en esta categoría");
         }
     }
+
+    public int getTotalAvailableBooks() {
+        int count = 0;
+        for (Book book : books) {
+            if (book.isAv()) count++;
+        }
+        return count;
+    }
 }
