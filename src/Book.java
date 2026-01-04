@@ -1,3 +1,6 @@
+import java.time.Year;
+import java.util.Objects;
+
 /**
  * Represents a book in the library system.
  * Contains information about the book's metadata and availability status.
@@ -22,21 +25,11 @@ public class Book {
      * @throws IllegalArgumentException if any parameter is invalid
      */
     public Book(String title, String author, String isbn, int publicationYear, String category) {
-        if (title == null || title.trim().isEmpty()) {
-            throw new IllegalArgumentException("Title cannot be null or empty");
-        }
-        if (author == null || author.trim().isEmpty()) {
-            throw new IllegalArgumentException("Author cannot be null or empty");
-        }
-        if (isbn == null || isbn.trim().isEmpty()) {
-            throw new IllegalArgumentException("ISBN cannot be null or empty");
-        }
-        if (publicationYear < 0 || publicationYear > java.time.Year.now().getValue()) {
-            throw new IllegalArgumentException("Publication year must be between 0 and current year");
-        }
-        if (category == null || category.trim().isEmpty()) {
-            throw new IllegalArgumentException("Category cannot be null or empty");
-        }
+        validateTitle(title);
+        validateAuthor(author);
+        validateIsbn(isbn);
+        validatePublicationYear(publicationYear);
+        validateCategory(category);
 
         this.title = title;
         this.author = author;
@@ -47,35 +40,58 @@ public class Book {
         this.timesCheckedOut = 0;
     }
 
-    public String getTitle() { return title; }
-    public void setTitle(String title) { 
+    // Validation helper methods
+    private void validateTitle(String title) {
         if (title == null || title.trim().isEmpty()) {
             throw new IllegalArgumentException("Title cannot be null or empty");
         }
+    }
+
+    private void validateAuthor(String author) {
+        if (author == null || author.trim().isEmpty()) {
+            throw new IllegalArgumentException("Author cannot be null or empty");
+        }
+    }
+
+    private void validateIsbn(String isbn) {
+        if (isbn == null || isbn.trim().isEmpty()) {
+            throw new IllegalArgumentException("ISBN cannot be null or empty");
+        }
+    }
+
+    private void validatePublicationYear(int year) {
+        if (year < 1440 || year > Year.now().getValue()) {
+            throw new IllegalArgumentException("Publication year must be between 1440 and current year");
+        }
+    }
+
+    private void validateCategory(String category) {
+        if (category == null || category.trim().isEmpty()) {
+            throw new IllegalArgumentException("Category cannot be null or empty");
+        }
+    }
+
+    public String getTitle() { return title; }
+    public void setTitle(String title) { 
+        validateTitle(title);
         this.title = title; 
     }
     
     public String getAuthor() { return author; }
     public void setAuthor(String author) { 
-        if (author == null || author.trim().isEmpty()) {
-            throw new IllegalArgumentException("Author cannot be null or empty");
-        }
+        validateAuthor(author);
         this.author = author; 
     }
     
     public String getIsbn() { return isbn; }
     public void setIsbn(String isbn) { 
-        if (isbn == null || isbn.trim().isEmpty()) {
-            throw new IllegalArgumentException("ISBN cannot be null or empty");
-        }
+        validateIsbn(isbn);
         this.isbn = isbn; 
     }
     
     public int getPublicationYear() { return publicationYear; }
     public void setPublicationYear(int publicationYear) { 
-        if (publicationYear < 0 || publicationYear > java.time.Year.now().getValue()) {
-            throw new IllegalArgumentException("Publication year must be between 0 and current year");
-        }
+        validatePublicationYear(publicationYear);
         this.publicationYear = publicationYear; 
     }
     
@@ -84,9 +100,7 @@ public class Book {
     
     public String getCategory() { return category; }
     public void setCategory(String category) { 
-        if (category == null || category.trim().isEmpty()) {
-            throw new IllegalArgumentException("Category cannot be null or empty");
-        }
+        validateCategory(category);
         this.category = category; 
     }
     
@@ -134,11 +148,11 @@ public class Book {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Book book = (Book) o;
-        return isbn.equals(book.isbn);
+        return Objects.equals(isbn, book.isbn);
     }
 
     @Override
     public int hashCode() {
-        return isbn.hashCode();
+        return Objects.hashCode(isbn);
     }
 }
